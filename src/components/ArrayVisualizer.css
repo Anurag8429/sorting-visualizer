@@ -1,0 +1,24 @@
+.array-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 400px;
+  margin: 20px;
+}
+
+.array-bar {
+  width: 10px;
+  background-color: turquoise;
+  margin: 0 2px;
+  transition: height 0.2s ease-in-out;
+  position: relative;
+}
+
+.bar-value {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: inherit;
+}

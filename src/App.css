@@ -1,0 +1,320 @@
+:root {
+  --bg-light: #f5f5f5;
+  --text-light: #333;
+  --bg-dark: #1a1a1a;
+  --text-dark: #f5f5f5;
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --disabled-color: #ccc;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  color: var(--text-light);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.App.dark {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--text-light);
+  transition: color 0.3s;
+  background: none;
+  border: none;
+}
+
+.App.dark .theme-toggle {
+  color: var(--text-dark);
+}
+
+h1 {
+  margin-top: 0;
+  padding-top: 20px;
+  font-size: 28px;
+}
+
+/* Controls Layout */
+.controls {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.App.dark .controls {
+  background-color: #2a2a2a;
+}
+
+.dropdowns-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: nowrap; /* Ensure all dropdowns stay in one row */
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-light);
+}
+
+.App.dark label {
+  color: var(--text-dark);
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  width: 200px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.App.dark select {
+  background-color: #333;
+  color: #f5f5f5;
+  border-color: #555;
+}
+
+input[type="range"] {
+  width: 200px;
+  margin: 10px 0;
+}
+
+input[type="color"] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: var(--box-shadow);
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: var(--disabled-color);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.array-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 400px;
+  margin: 20px auto;
+  gap: 2px;
+  max-width: 1200px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+}
+
+.App.dark .array-container {
+  background-color: #2a2a2a;
+}
+
+.array-bar {
+  flex: 1;
+  margin: 0 2px;
+  transition: height 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  position: relative;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bar-value {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Algorithm Info Container */
+.algorithm-info {
+  margin: 20px auto;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  text-align: left;
+}
+
+.App.dark .algorithm-info {
+  background-color: #2a2a2a;
+}
+
+.algorithm-info h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.complexity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.complexity-item {
+  background-color: rgba(0, 123, 255, 0.1);
+  padding: 10px;
+  border-radius: var(--border-radius);
+}
+
+.App.dark .complexity-item {
+  background-color: rgba(0, 123, 255, 0.2);
+}
+
+.complexity-item p {
+  margin: 5px 0;
+}
+
+.complexity-item h4 {
+  margin: 0 0 5px 0;
+  color: var(--primary-color);
+}
+
+/* Notification for "already sorted" */
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px 20px;
+  background-color: white;
+  color: #333;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  z-index: 1000;
+  animation: fadeIn 0.3s, fadeOut 0.3s 2s forwards;
+}
+
+.App.dark .notification {
+  background-color: #2a2a2a;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .dropdowns-container {
+    flex-wrap: wrap; /* Allow dropdowns to wrap on smaller screens */
+  }
+
+  .buttons-container {
+    flex-wrap: wrap;
+  }
+
+  .control-group {
+    width: 100%;
+  }
+
+  select, input[type="range"] {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .array-container {
+    height: 300px;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .array-container {
+    height: 200px;
+    padding: 10px;
+  }
+
+  .bar-value {
+    font-size: 10px;
+  }
+  
+  .controls, .algorithm-info {
+    padding: 15px 10px;
+  }
+  
+  h1 {
+    font-size: 20px;
+  }
+}

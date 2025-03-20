@@ -1,0 +1,114 @@
+/* src/components/AlgorithmInfo.css */
+.algorithm-info {
+  margin-top: 40px;
+  padding: 25px;
+  background-color: var(--bg-light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: all 0.3s ease;
+}
+
+/* Dark mode support */
+.App.dark .algorithm-info {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.algorithm-info h2 {
+  margin-bottom: 16px;
+  position: relative;
+  padding-bottom: 10px;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.algorithm-description {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.complexity-details {
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+}
+
+.App.dark .complexity-details {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.complexity-details h3 {
+  margin-bottom: 10px;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+.complexity-details p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.complexity-graph {
+  max-width: 800px;
+  margin: 0 auto 30px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.App.dark .complexity-graph {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.algorithm-properties {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .algorithm-properties {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.algorithm-properties h3 {
+  grid-column: 1 / -1;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.property {
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.App.dark .property {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.property:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.App.dark .property:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.property strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+  font-size: 1.05rem;
+}
+
+.property p {
+  line-height: 1.5;
+  margin: 0;
+}
