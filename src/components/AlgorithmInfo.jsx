@@ -1,5 +1,4 @@
-// src/components/AlgorithmInfo.jsx
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -101,6 +100,18 @@ const ALGORITHM_COMPLEXITY = {
 };
 
 const AlgorithmInfo = ({ algorithm }) => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  
+  // Update window width when resizing
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Get complexity data for the selected algorithm
   const complexity = useMemo(() => 
     ALGORITHM_COMPLEXITY[algorithm] || {
@@ -131,50 +142,113 @@ const AlgorithmInfo = ({ algorithm }) => {
     ],
   }), [complexity]);
 
-  const chartOptions = useMemo(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: `${algorithm} Time Complexity Comparison`,
-        font: {
-          size: 16
-        }
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => {
-            const value = context.raw;
-            const complexityLabels = Object.entries(COMPLEXITY_VALUES);
-            const match = complexityLabels.find(([_, val]) => val === value);
-            return match ? match[0] : "Unknown";
+  const chartOptions = useMemo(() => {
+    // Adjust font sizes based on screen width
+    const titleFontSize = windowWidth < 480 ? 12 : windowWidth < 768 ? 14 : 16;
+    const labelFontSize = windowWidth < 480 ? 10 : windowWidth < 768 ? 12 : 14;
+    const tickFontSize = windowWidth < 480 ? 9 : windowWidth < 768 ? 10 : 12;
+    
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "top",
+          labels: {
+            font: {
+              size: labelFontSize
+            },
+            boxWidth: windowWidth < 480 ? 30 : 40
           }
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 5.5,
+        },
         title: {
           display: true,
-          text: 'Complexity'
+          text: windowWidth < 480 ? 
+            `${algorithm} Complexity` : 
+            `${algorithm} Time Complexity Comparison`,
+          font: {
+            size: titleFontSize
+          }
         },
-        ticks: {
-          callback: (value) => {
-            const complexityLabels = Object.entries(COMPLEXITY_VALUES);
-            const match = complexityLabels.find(([_, val]) => val === value);
-            return match ? match[0] : "";
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const value = context.raw;
+              const complexityLabels = Object.entries(COMPLEXITY_VALUES);
+              const match = complexityLabels.find(([_, val]) => val === value);
+              return match ? match[0] : "Unknown";
+            }
           },
-          stepSize: 1
+          titleFont: {
+            size: labelFontSize
+          },
+          bodyFont: {
+            size: labelFontSize
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            font: {
+              size: tickFontSize
+            }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          max: 5.5,
+          title: {
+            display: windowWidth >= 480,
+            text: 'Complexity',
+            font: {
+              size: labelFontSize
+            }
+          },
+          ticks: {
+            callback: (value) => {
+              const complexityLabels = Object.entries(COMPLEXITY_VALUES);
+              const match = complexityLabels.find(([_, val]) => val === value);
+              // For small screens, use shorter labels
+              if (windowWidth < 480 && match) {
+                // Simplified notation for small screens
+                const notation = match[0];
+                return notation.replace("O(", "").replace(")", "");
+              }
+              return match ? match[0] : "";
+            },
+            stepSize: 1,
+            font: {
+              size: tickFontSize
+            }
+          },
         },
       },
-    },
-  }), [algorithm]);
+      // Reduce bar thickness for smaller screens
+      barThickness: windowWidth < 480 ? 30 : windowWidth < 768 ? 40 : 50,
+    };
+  }, [algorithm, windowWidth]);
+
+  // Render a simplified view for very small screens
+  const renderSmallScreenView = () => (
+    <div className="complexity-details">
+      <h3>Complexity Summary</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        <div>
+          <strong>Best:</strong> {complexity.time.best}
+        </div>
+        <div>
+          <strong>Average:</strong> {complexity.time.average}
+        </div>
+        <div>
+          <strong>Worst:</strong> {complexity.time.worst}
+        </div>
+        <div>
+          <strong>Space:</strong> {complexity.space}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="algorithm-info">
@@ -184,22 +258,27 @@ const AlgorithmInfo = ({ algorithm }) => {
         <p>{complexity.description}</p>
       </div>
       
-      <div className="complexity-details">
-        <h3>Time Complexity</h3>
-        <p>
-          <strong>Best Case:</strong> {complexity.time.best}
-        </p>
-        <p>
-          <strong>Average Case:</strong> {complexity.time.average}
-        </p>
-        <p>
-          <strong>Worst Case:</strong> {complexity.time.worst}
-        </p>
-        <h3>Space Complexity</h3>
-        <p>{complexity.space}</p>
-      </div>
+      {/* Show detailed view only on screens larger than very small */}
+      {windowWidth > 320 ? (
+        <div className="complexity-details">
+          <h3>Time Complexity</h3>
+          <p>
+            <strong>Best Case:</strong> {complexity.time.best}
+          </p>
+          <p>
+            <strong>Average Case:</strong> {complexity.time.average}
+          </p>
+          <p>
+            <strong>Worst Case:</strong> {complexity.time.worst}
+          </p>
+          <h3>Space Complexity</h3>
+          <p>{complexity.space}</p>
+        </div>
+      ) : (
+        renderSmallScreenView()
+      )}
       
-      <div className="complexity-graph" style={{ height: "300px" }}>
+      <div className="complexity-graph">
         <Bar data={graphData} options={chartOptions} />
       </div>
       
